@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DeliverySystem.Data;
 using DriverInfo.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace DeliverySystem.Controllers
 {
@@ -15,19 +16,38 @@ namespace DeliverySystem.Controllers
     public class DriverController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<Employee> _userManager;
 
-        public DriverController(AppDbContext context)
+        public DriverController(AppDbContext context, UserManager<Employee> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: Driver
+
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Drivers.ToListAsync());
+            var currentEmployee = await _userManager.GetUserAsync(User);
+            if (currentEmployee == null) return Unauthorized();
+
+            IQueryable<Driver> drivers;
+
+            // Om användaren är Admin, visa alla förare
+            if (User.IsInRole("Admin"))
+            {
+                drivers = _context.Drivers.Include(d => d.ResponsibleEmployee);
+            }
+            else
+            {
+                // Om användaren är en Employee, visa endast förare skapade av denna Employee
+                drivers = _context.Drivers
+                    .Where(d => d.ResponsibleEmployeeId == currentEmployee.Id)
+                    .Include(d => d.ResponsibleEmployee);
+            }
+
+            return View(await drivers.ToListAsync());
         }
 
-        // GET: Driver/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,29 +66,41 @@ namespace DeliverySystem.Controllers
             return View(driver);
         }
 
-        // GET: Driver/Create
-        public IActionResult Create()
+
+        public async Task<IActionResult> Create()
         {
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Employees = new SelectList(await _userManager.Users.ToListAsync(), "Id", "Name");
+            }
             return View();
         }
 
-        // POST: Driver/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DriverID,DriverName,CarReg")] Driver driver)
+        public async Task<IActionResult> Create(Driver driver)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(driver);
+                if (User.IsInRole("Admin") && !string.IsNullOrEmpty(driver.ResponsibleEmployeeId))
+                {
+
+                }
+                else
+                {
+                    var currentEmployee = await _userManager.GetUserAsync(User);
+                    if (currentEmployee == null) return Unauthorized();
+
+                    driver.ResponsibleEmployeeId = currentEmployee.Id;
+                }
+
+                _context.Drivers.Add(driver);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(driver);
         }
 
-        // GET: Driver/Edit/5
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,9 +116,6 @@ namespace DeliverySystem.Controllers
             return View(driver);
         }
 
-        // POST: Driver/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("DriverID,DriverName,CarReg")] Driver driver)
@@ -119,7 +148,6 @@ namespace DeliverySystem.Controllers
             return View(driver);
         }
 
-        // GET: Driver/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,7 +165,7 @@ namespace DeliverySystem.Controllers
             return View(driver);
         }
 
-        // POST: Driver/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

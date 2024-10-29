@@ -13,6 +13,10 @@ namespace DriverInfo.Models
         [Required(ErrorMessage = "Registration number is mandatory")]
         public string CarReg { get; set; }
 
+        // Referens till den ansvariga anställda
+        public string ResponsibleEmployeeId { get; set; }
+        public Employee ResponsibleEmployee { get; set; }
+
         public decimal TotalAmountSpent
         {
             get
