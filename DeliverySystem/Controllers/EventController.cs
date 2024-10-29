@@ -41,18 +41,13 @@ namespace DeliverySystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Hämta inloggad användare
                 var currentEmployee = await _userManager.GetUserAsync(User);
                 if (currentEmployee == null)
                 {
                     return Unauthorized();
                 }
+                model.ResponsibleEmployeeid = currentEmployee.Id;
 
-                // Tilldela ResponsibleEmployee och DriverID
-                model.ResponsibleEmployee = currentEmployee.Name;
-                model.DriverID = model.DriverID; // Detta fält är redan satt via GET-metoden
-
-                // Spara händelsen
                 _context.Events.Add(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Driver", new { id = model.DriverID });
@@ -61,6 +56,25 @@ namespace DeliverySystem.Controllers
             var driver = _context.Drivers.FirstOrDefault(d => d.DriverID == model.DriverID);
             ViewBag.DriverName = driver?.DriverName;
             return View(model);
+        }
+        public async Task<IActionResult> Notifications()
+        {
+            var lastTwelveHours = DateTime.Now.AddHours(-12);
+
+            var recentEvents = await _context.Events
+                .Where(e => e.NoteDate >= lastTwelveHours)
+                .Include(e => e.Driver) 
+                .Include(e => e.ResponsibleEmployee) 
+                .ToListAsync();
+
+            return View(recentEvents);
+        }
+        public async Task<int> GetRecentEventCount()
+        {
+            var twelveHoursAgo = DateTime.Now.AddHours(-12);
+            return await _context.Events
+                .Where(e => e.NoteDate >= twelveHoursAgo)
+                .CountAsync();
         }
     }
 }

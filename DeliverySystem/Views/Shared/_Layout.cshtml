@@ -32,6 +32,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Driver" asp-action="Index">Manage Drivers</a>
                         </li>
                     </ul>
+                    <div class="navbar-nav ml-auto">
+                        @await Component.InvokeAsync("NotificationIcon")
+                    </div>
                     <partial name="_LoginPartial" />
                 </div>
             </div>

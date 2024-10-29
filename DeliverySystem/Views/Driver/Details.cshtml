@@ -4,33 +4,26 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h2>Driver Details</h2>
 
 <div>
-    <h4>Driver</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DriverName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DriverName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CarReg)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CarReg)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalAmountAllEvents)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TotalAmountAllEvents)
-        </dd>
+    <h4>@Model.DriverName</h4>
+    <p>Car Registration: @Model.CarReg</p>
+</div>
 
-    </dl>
-    <h4>Events</h4>
+<h4>Filter Events by Date</h4>
+<form method="get" asp-action="Details" asp-route-id="@Model.DriverID">
+    <label>Från:</label>
+    <input type="date" name="startDate" value="@ViewBag.StartDate?.ToString("yyyy-MM-dd")" />
+
+    <label>Till:</label>
+    <input type="date" name="endDate" value="@ViewBag.EndDate?.ToString("yyyy-MM-dd")" />
+
+    <button type="submit" class="btn btn-primary">Filter</button>
+    <a asp-action="Details" asp-route-id="@Model.DriverID" class="btn btn-secondary">Reset</a>
+</form>
+
+<h4>Events</h4>
     <table class="table">
         <thead>
             <tr>

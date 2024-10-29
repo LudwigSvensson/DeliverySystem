@@ -1,0 +1,29 @@
+﻿@model IEnumerable<DriverInfo.Models.Event>
+
+<h2>Recent Events (Last 12 Hours)</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount In</th>
+            <th>Amount Out</th>
+            <th>Driver</th>
+            <th>Responsible Employee</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var eventItem in Model)
+        {
+            <tr>
+                <td>@eventItem.NoteDate.ToString("g")</td>
+                <td>@eventItem.NoteDescription</td>
+                <td>@eventItem.AmountIn</td>
+                <td>@eventItem.AmountOut</td>
+                <td>@eventItem.Driver?.DriverName </td>
+                <td>@eventItem.ResponsibleEmployee?.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>

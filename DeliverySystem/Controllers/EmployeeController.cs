@@ -17,20 +17,20 @@ namespace DeliverySystem.Controllers
             _roleManager = roleManager;
         }
 
-        // Lista alla Employees
+
         public IActionResult Index()
         {
             var employees = _userManager.GetUsersInRoleAsync("Employee").Result;
             return View(employees);
         }
 
-        // Visa formulär för att skapa en ny Employee
+
         public IActionResult Create()
         {
             return View();
         }
 
-        // Skapa en ny Employee
+
         [HttpPost]
         public async Task<IActionResult> Create(Employee model, string password)
         {
@@ -52,7 +52,7 @@ namespace DeliverySystem.Controllers
             return View(model);
         }
 
-        // Redigera en Employee
+
         public async Task<IActionResult> Edit(string id)
         {
             var employee = await _userManager.FindByIdAsync(id);
@@ -84,7 +84,6 @@ namespace DeliverySystem.Controllers
             return View(model);
         }
 
-        // Ta bort en Employee
         public async Task<IActionResult> Delete(string id)
         {
             var employee = await _userManager.FindByIdAsync(id);

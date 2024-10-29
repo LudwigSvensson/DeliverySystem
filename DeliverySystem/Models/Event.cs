@@ -16,9 +16,11 @@ namespace DriverInfo.Models
             get => _amountOut;
             set => _amountOut = value > 0 ? -value : value;
         }
-        public string ResponsibleEmployee { get; set; }
 
         //Relationships
+        public string ResponsibleEmployeeid { get; set; }
+        public Employee ResponsibleEmployee { get; set; }
+        
         public int DriverID { get; set; }
         public Driver Driver { get; set; }
     }

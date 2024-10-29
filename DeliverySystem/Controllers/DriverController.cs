@@ -25,7 +25,7 @@ namespace DeliverySystem.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchName)
         {
             var currentEmployee = await _userManager.GetUserAsync(User);
             if (currentEmployee == null) return Unauthorized();
@@ -44,24 +44,34 @@ namespace DeliverySystem.Controllers
                     .Where(d => d.ResponsibleEmployeeId == currentEmployee.Id)
                     .Include(d => d.ResponsibleEmployee);
             }
+            if (!string.IsNullOrEmpty(searchName))
+            {
+                drivers = drivers.Where(d => d.DriverName.Contains(searchName));
+            }
 
             return View(await drivers.ToListAsync());
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id, DateTime? startDate, DateTime? endDate)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
+            // Hämta föraren med dess relaterade händelser
             var driver = await _context.Drivers
                 .Include(d => d.Events)
-                .FirstOrDefaultAsync(m => m.DriverID == id);
-            if (driver == null)
+                .FirstOrDefaultAsync(d => d.DriverID == id);
+
+            if (driver == null) return NotFound();
+
+            // Filtrera händelserna baserat på datumintervallet
+            if (startDate.HasValue && endDate.HasValue)
             {
-                return NotFound();
+                driver.Events = driver.Events
+                    .Where(e => e.NoteDate >= startDate && e.NoteDate <= endDate)
+                    .ToList();
             }
+
+            // Skicka datumvärdena till vyn för att kunna behålla dem i fälten
+            ViewBag.StartDate = startDate;
+            ViewBag.EndDate = endDate;
 
             return View(driver);
         }
