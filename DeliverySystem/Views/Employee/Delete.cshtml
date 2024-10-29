@@ -1,0 +1,8 @@
+﻿@model DriverInfo.Models.Employee
+
+<h2>Delete Employee</h2>
+<p>Are you sure you want to delete @Model.UserName?</p>
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit">Delete</button>
+</form>

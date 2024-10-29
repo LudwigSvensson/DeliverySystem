@@ -1,0 +1,62 @@
+﻿@model DriverInfo.Models.Driver
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Driver</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DriverName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DriverName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CarReg)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CarReg)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalAmountAllEvents)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalAmountAllEvents)
+        </dd>
+
+    </dl>
+    <h4>Events</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount In</th>
+                <th>Amount Out</th>
+                <th>Responsible Employee</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var eventItem in Model.Events)
+            {
+                <tr>
+                    <td>@eventItem.NoteDate.ToShortDateString()</td>
+                    <td>@eventItem.NoteDescription</td>
+                    <td>@eventItem.AmountIn</td>
+                    <td>@eventItem.AmountOut</td>
+                    <td>@eventItem.ResponsibleEmployee</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.DriverID">Edit</a> |
+    <a asp-action="Create" asp-controller="Event" asp-route-driverId="@Model.DriverID">Add Event</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
