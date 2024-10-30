@@ -22,9 +22,9 @@ jobs:
         with:
           dotnet-version: '8.x'  # Make sure this matches your .NET version
 
-      # 3. Verify file structure (optional, helps you debug where .csproj is located)
+      # 3. Verify file structure (lists all files and directories)
       - name: List files
-        run: dir /s /b
+        run: ls -R  # Recurse through all directories and list their contents
 
       # 4. Build the project
       - name: Build with dotnet
