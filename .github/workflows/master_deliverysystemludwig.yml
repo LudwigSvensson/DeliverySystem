@@ -20,19 +20,19 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.x'  # Make sure this matches your .NET version
+          dotnet-version: '8.x'  # Använd rätt version för ditt projekt
 
-      # 3. Verify file structure (lists all files and directories)
+      # 3. Verify file structure (optional, kan tas bort efter felsökning)
       - name: List files
-        run: ls -R  # Recurse through all directories and list their contents
+        run: ls -R  # Listar hela strukturen för att dubbelkolla sökvägar
 
       # 4. Build the project
       - name: Build with dotnet
-        run: dotnet build DeliverySystem/DeliverySystem/*.csproj --configuration Release
+        run: dotnet build DeliverySystem/DeliverySystem/DeliverySystem.csproj --configuration Release
 
       # 5. Publish the project to a specified output directory
       - name: Publish with dotnet
-        run: dotnet publish DeliverySystem/DeliverySystem/*.csproj --configuration Release --output ./myapp
+        run: dotnet publish DeliverySystem/DeliverySystem/DeliverySystem.csproj --configuration Release --output ./myapp
 
       # 6. Upload the published files as an artifact for the deploy job
       - name: Upload artifact for deployment job
@@ -70,8 +70,9 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'deliverysystemludwig'  # Name of your Azure Web App
+          app-name: 'deliverysystemludwig'  # Namnet på din Azure Web App
           slot-name: 'Production'
-          package: ./  # Deploy the downloaded artifact in the current directory
+          package: ./  # Distribuera den nedladdade artefakten i nuvarande katalog
+
 
           
