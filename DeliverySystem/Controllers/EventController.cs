@@ -9,6 +9,7 @@ using DeliverySystem.Data;
 using DriverInfo.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Diagnostics.Metrics;
 
 namespace DeliverySystem.Controllers
 {
@@ -53,6 +54,7 @@ namespace DeliverySystem.Controllers
                 return RedirectToAction("Details", "Driver", new { id = model.DriverID });
             }
 
+        
             var driver = _context.Drivers.FirstOrDefault(d => d.DriverID == model.DriverID);
             ViewBag.DriverName = driver?.DriverName;
             return View(model);
@@ -65,23 +67,99 @@ namespace DeliverySystem.Controllers
 
                 var recentEvents24 = await _context.Events
                     .Where(e => e.NoteDate >= lastTwentyFourHours)
+                    .OrderByDescending(e => e.NoteDate)
                     .Include(e => e.Driver)
                     .Include(e => e.ResponsibleEmployee)
                     .ToListAsync();
 
                 return View(recentEvents24);
             }
-            var lastTwelveHours = DateTime.Now.AddHours(-12);
+            var currentEmployee = await _userManager.GetUserAsync(User);
+            var twelveHoursAgo = DateTime.Now.AddHours(-12);
 
-            var recentEvents12 = await _context.Events
-                .Where(e => e.NoteDate >= lastTwelveHours)
-                .Include(e => e.Driver) 
-                .Include(e => e.ResponsibleEmployee) 
+            var recentEvents = await _context.Events
+                .Where(e => e.NoteDate >= twelveHoursAgo && e.Driver.ResponsibleEmployeeId == currentEmployee.Id)
+                .Include(e => e.Driver)
+                .Include(e => e.ResponsibleEmployee)
+                .OrderByDescending(e => e.NoteDate)
                 .ToListAsync();
 
-            return View(recentEvents12);
+            return View(recentEvents);
         }
-        public async Task<int> GetRecentEventCount()
+        // GET: Event/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            var eventItem = await _context.Events.FindAsync(id);
+            if (eventItem == null)
+            {
+                return NotFound();
+            }
+
+            return View(eventItem);
+        }
+
+        // POST: Event/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Event model)
+        {
+            if (id != model.EventID)
+            {
+                return BadRequest();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(model);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", "Driver", new { id = model.DriverID });
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Events.Any(e => e.EventID == id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return View(model);
+        }
+
+        // GET: Event/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var eventItem = await _context.Events
+                .Include(e => e.Driver)
+                .FirstOrDefaultAsync(e => e.EventID == id);
+
+            if (eventItem == null)
+            {
+                return NotFound();
+            }
+
+            return View(eventItem);
+        }
+
+        // POST: Event/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var eventItem = await _context.Events.FindAsync(id);
+            if (eventItem != null)
+            {
+                _context.Events.Remove(eventItem);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", "Driver", new { id = eventItem.DriverID });
+        }
+            public async Task<int> GetRecentEventCount()
         {
             
             if (User.IsInRole("Admin"))
@@ -95,6 +173,32 @@ namespace DeliverySystem.Controllers
             return await _context.Events
                 .Where(e => e.NoteDate >= twelveHoursAgo)
                 .CountAsync();
+        }
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AdminOverview(DateTime? startDate, DateTime? endDate, string driverName, string employeeName)
+        {
+            var query = _context.Events
+                .Include(e => e.Driver)
+                .Include(e => e.ResponsibleEmployee)
+                .AsQueryable();
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                query = query.Where(e => e.NoteDate >= startDate && e.NoteDate <= endDate);
+            }
+
+            if (!string.IsNullOrEmpty(driverName))
+            {
+                query = query.Where(e => e.Driver.DriverName.Contains(driverName));
+            }
+
+            if (!string.IsNullOrEmpty(employeeName))
+            {
+                query = query.Where(e => e.ResponsibleEmployee.Name.Contains(employeeName));
+            }
+            var filteredEvents = await query.OrderByDescending(e => e.NoteDate).ToListAsync();
+
+            return View(filteredEvents);
         }
     }
 }

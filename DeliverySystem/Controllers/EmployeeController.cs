@@ -41,7 +41,7 @@ namespace DeliverySystem.Controllers
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(employee, "Employee"); // Tilldela rollen Employee
+                    await _userManager.AddToRoleAsync(employee, "Employee");
                     return RedirectToAction("Index");
                 }
                 foreach (var error in result.Errors)

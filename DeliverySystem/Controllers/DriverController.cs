@@ -32,14 +32,14 @@ namespace DeliverySystem.Controllers
 
             IQueryable<Driver> drivers;
 
-            // Om användaren är Admin, visa alla förare
+
             if (User.IsInRole("Admin"))
             {
                 drivers = _context.Drivers.Include(d => d.ResponsibleEmployee);
             }
             else
             {
-                // Om användaren är en Employee, visa endast förare skapade av denna Employee
+
                 drivers = _context.Drivers
                     .Where(d => d.ResponsibleEmployeeId == currentEmployee.Id)
                     .Include(d => d.ResponsibleEmployee);
@@ -54,22 +54,20 @@ namespace DeliverySystem.Controllers
 
         public async Task<IActionResult> Details(int id, DateTime? startDate, DateTime? endDate)
         {
-            // Hämta föraren med dess relaterade händelser
             var driver = await _context.Drivers
                 .Include(d => d.Events)
+                .ThenInclude(e => e.ResponsibleEmployee)
                 .FirstOrDefaultAsync(d => d.DriverID == id);
 
             if (driver == null) return NotFound();
 
-            // Filtrera händelserna baserat på datumintervallet
             if (startDate.HasValue && endDate.HasValue)
             {
-                driver.Events = driver.Events
+                driver.Events = driver.Events      
                     .Where(e => e.NoteDate >= startDate && e.NoteDate <= endDate)
                     .ToList();
             }
 
-            // Skicka datumvärdena till vyn för att kunna behålla dem i fälten
             ViewBag.StartDate = startDate;
             ViewBag.EndDate = endDate;
 

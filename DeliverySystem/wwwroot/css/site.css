@@ -1,25 +1,69 @@
-html {
-  font-size: 14px;
-}
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+        position: relative;
+        min-height: 100%;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: linen;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #333;
+    font-family: Arial, sans-serif;
 }
+
+.navbar .nav-item {
+    color: #333;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.navbar .nav-item.active {
+        color: #4CAF50; 
+        font-weight: bold;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.2); 
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.btn-primary {
+    background-color: #4CAF50; 
+    border: none;
+}
+
+.btn-primary:hover {
+        background-color: #45a049; 
+}
+
+.btn-danger {
+    background-color: #f44336; 
+    border: none;
+}
+
+.btn-danger:hover {
+        background-color: #d32f2f; 
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 0.875rem;
+}
+
+a.btn-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a.btn-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+}
+
 .fa-bell {
     position: relative;
     font-size: 1.5em;
@@ -30,12 +74,12 @@ body {
     margin-right: 10px; 
 }
 
-    .notification-icon i {
+.notification-icon i {
         font-size: 1.5em; 
         vertical-align: middle;
-    }
+}
 
-    .notification-icon .badge {
+.notification-icon .badge {
         position: absolute;
         top: -8px; 
         right: -8px; 
@@ -44,5 +88,27 @@ body {
         border-radius: 50%;
         padding: 3px 7px;
         font-size: 0.75em;
-        font-weight: bold;
-    }
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.9); 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin-top: 40px;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+.form-inline .btn {
+    margin-right: 5px; 
+}
+
+.input-group {
+    max-width: 500px; 
+}

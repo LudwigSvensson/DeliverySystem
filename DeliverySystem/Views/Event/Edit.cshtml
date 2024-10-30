@@ -11,6 +11,8 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
+            <input type="hidden" asp-for="DriverID" />
+            <input type="hidden" asp-for="ResponsibleEmployeeid" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="EventID" />
             <div class="form-group">
@@ -34,16 +36,6 @@
                 <span asp-validation-for="AmountOut" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ResponsibleEmployee" class="control-label"></label>
-                <input asp-for="ResponsibleEmployee" class="form-control" />
-                <span asp-validation-for="ResponsibleEmployee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DriverID" class="control-label"></label>
-                <select asp-for="DriverID" class="form-control" asp-items="ViewBag.DriverID"></select>
-                <span asp-validation-for="DriverID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -51,7 +43,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Driver" asp-action="Details">Back to List</a>
 </div>
 
 @section Scripts {
