@@ -1,6 +1,14 @@
 ﻿@model IEnumerable<DriverInfo.Models.Event>
 
-<h2>Recent Events (Last 12 Hours)</h2>
+@if (User.IsInRole("Admin"))
+{
+    <h2>Recent Events (Last 24 Hours)</h2>
+}
+@if (User.IsInRole("Employee"))
+{
+    <h2>Recent Events (Last 12 Hours)</h2>
+}
+
 
 <table class="table">
     <thead>

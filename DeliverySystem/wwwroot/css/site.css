@@ -27,18 +27,18 @@ body {
 .notification-icon {
     position: relative;
     display: inline-block;
-    margin-right: 10px; /* Justerar mellanrummet mellan ikon och text */
+    margin-right: 10px; 
 }
 
     .notification-icon i {
-        font-size: 1.5em; /* Gör ikonen något större om du vill */
+        font-size: 1.5em; 
         vertical-align: middle;
     }
 
     .notification-icon .badge {
         position: absolute;
-        top: -8px; /* Flyttar badgen upp */
-        right: -8px; /* Flyttar badgen åt höger */
+        top: -8px; 
+        right: -8px; 
         background-color: red;
         color: white;
         border-radius: 50%;

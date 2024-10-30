@@ -59,18 +59,38 @@ namespace DeliverySystem.Controllers
         }
         public async Task<IActionResult> Notifications()
         {
+            if (User.IsInRole("Admin"))
+            {
+                var lastTwentyFourHours = DateTime.Now.AddHours(-24);
+
+                var recentEvents24 = await _context.Events
+                    .Where(e => e.NoteDate >= lastTwentyFourHours)
+                    .Include(e => e.Driver)
+                    .Include(e => e.ResponsibleEmployee)
+                    .ToListAsync();
+
+                return View(recentEvents24);
+            }
             var lastTwelveHours = DateTime.Now.AddHours(-12);
 
-            var recentEvents = await _context.Events
+            var recentEvents12 = await _context.Events
                 .Where(e => e.NoteDate >= lastTwelveHours)
                 .Include(e => e.Driver) 
                 .Include(e => e.ResponsibleEmployee) 
                 .ToListAsync();
 
-            return View(recentEvents);
+            return View(recentEvents12);
         }
         public async Task<int> GetRecentEventCount()
         {
+            
+            if (User.IsInRole("Admin"))
+            {
+                var twentyFourHoursAgo = DateTime.Now.AddHours(-24);
+                return await _context.Events
+                    .Where(e => e.NoteDate >= twentyFourHoursAgo)
+                    .CountAsync();
+            } 
             var twelveHoursAgo = DateTime.Now.AddHours(-12);
             return await _context.Events
                 .Where(e => e.NoteDate >= twelveHoursAgo)
