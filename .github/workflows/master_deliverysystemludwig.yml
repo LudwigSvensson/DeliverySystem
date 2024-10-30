@@ -1,5 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+# GitHub Actions workflow for building and deploying ASP.Net Core app to Azure Web App
 
 name: Build and deploy ASP.Net Core app to Azure Web App - deliverysystemludwig
 
@@ -14,27 +13,33 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      # 1. Check out the code from the repository
       - uses: actions/checkout@v4
 
+      # 2. Set up the .NET Core SDK
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.x'
-          
+          dotnet-version: '8.x'  # Make sure this matches your .NET version
+
+      # 3. Verify file structure (optional, helps you debug where .csproj is located)
       - name: List files
         run: dir /s /b
 
+      # 4. Build the project
       - name: Build with dotnet
         run: dotnet build DeliverySystem/DeliverySystem/*.csproj --configuration Release
 
+      # 5. Publish the project to a specified output directory
       - name: Publish with dotnet
         run: dotnet publish DeliverySystem/DeliverySystem/*.csproj --configuration Release --output ./myapp
 
+      # 6. Upload the published files as an artifact for the deploy job
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ./myapp
+          name: .net-app  # Artifact name
+          path: ./myapp  # Path to the published output
 
   deploy:
     runs-on: windows-latest
@@ -43,14 +48,16 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write # Required for Azure login
 
     steps:
+      # 7. Download the artifact from the build job
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
+
+      # 8. Log in to Azure using service principal credentials
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -58,11 +65,13 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_177161DB2CBB436C9EAA4C71EA8147D6 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_13BA26AA078E4695B4B300402BDF9BE1 }}
 
+      # 9. Deploy the app to Azure Web App
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'deliverysystemludwig'
+          app-name: 'deliverysystemludwig'  # Name of your Azure Web App
           slot-name: 'Production'
-          package: .
+          package: ./  # Deploy the downloaded artifact in the current directory
+
           
