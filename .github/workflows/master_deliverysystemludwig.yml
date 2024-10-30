@@ -1,5 +1,3 @@
-# GitHub Actions workflow for building and deploying ASP.Net Core app to Azure Web App
-
 name: Build and deploy ASP.Net Core app to Azure Web App - deliverysystemludwig
 
 on:
@@ -20,19 +18,21 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.x'  # Använd rätt version för ditt projekt
+          dotnet-version: '8.x'
 
-      # 3. Verify file structure (optional, kan tas bort efter felsökning)
+      # 3. Verify file structure (optional)
       - name: List files
-        run: ls -R  # Listar hela strukturen för att dubbelkolla sökvägar
+        run: ls -R  # List all files to confirm paths
 
-      # 4. Build the project
+      # 4. Build the project with specified working directory
       - name: Build with dotnet
-        run: dotnet build DeliverySystem/DeliverySystem/DeliverySystem.csproj --configuration Release
+        working-directory: ./DeliverySystem/DeliverySystem
+        run: dotnet build DeliverySystem.csproj --configuration Release
 
       # 5. Publish the project to a specified output directory
       - name: Publish with dotnet
-        run: dotnet publish DeliverySystem/DeliverySystem/DeliverySystem.csproj --configuration Release --output ./myapp
+        working-directory: ./DeliverySystem/DeliverySystem
+        run: dotnet publish DeliverySystem.csproj --configuration Release --output ../../myapp
 
       # 6. Upload the published files as an artifact for the deploy job
       - name: Upload artifact for deployment job
@@ -48,7 +48,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # Required for Azure login
+      id-token: write
 
     steps:
       # 7. Download the artifact from the build job
@@ -70,9 +70,10 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'deliverysystemludwig'  # Namnet på din Azure Web App
+          app-name: 'deliverysystemludwig'
           slot-name: 'Production'
-          package: ./  # Distribuera den nedladdade artefakten i nuvarande katalog
+          package: ./myapp  # Directory with the published files
+
 
 
           
