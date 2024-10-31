@@ -20,14 +20,16 @@
     <div class="text-center mt-3">
         <button type="submit" class="btn btn-success btn-lg">Filter</button>
         <a asp-action="Details" asp-route-id="@Model.DriverID" class="btn btn-secondary btn-lg">Reset</a>
-    </div>
-   
-
-    
+    </div>   
 </form>
 <hr/>
 <div class="text-center mb-4">
     <h4>Events</h4>
+</div>
+<div class="text-center mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.DriverID" class="btn btn-primary btn-block mt-4">Edit Driver</a>
+    <a asp-action="Create" asp-controller="Event" asp-route-driverId="@Model.DriverID" class="btn btn-success btn-block mt-4">Add Event</a>
+    <a asp-action="Index" class="btn btn-secondary btn-block mt-4">Back to List</a>
 </div>
 <table class="table table-striped table-bordered table-hover">
         <thead>
@@ -57,8 +59,4 @@
             }
         </tbody>
     </table>
-<div class="text-center mt-4">
-    <a asp-action="Edit" asp-route-id="@Model.DriverID" class="btn btn-primary">Edit Driver</a>
-    <a asp-action="Create" asp-controller="Event" asp-route-driverId="@Model.DriverID" class="btn btn-success ml-2">Add Event</a>
-    <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
-</div>
+

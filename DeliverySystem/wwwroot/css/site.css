@@ -16,15 +16,10 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.navbar .nav-item {
-    color: #333;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
-}
-
-.navbar .nav-item.active {
-        color: #4CAF50; 
-        font-weight: bold;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.2); 
+.nav-link.active {
+    font-weight: bold;
+    color: #333 !important; /* Ändra färg efter behov */
+    border-bottom: 2px solid #333; /* Ger en markering under länken */
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {

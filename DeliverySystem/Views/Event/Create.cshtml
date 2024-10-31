@@ -49,7 +49,7 @@
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary btn-block mt-4" />
-                <a asp-action="Index" class="btn btn-secondary btn-block mt-4">Go back</a>
+                <a asp-controller="Driver" asp-action="Details" asp-route-id="@Model.DriverID" class="btn btn-secondary btn-block mt-4">Go back</a>
             </div>
         </form>
     </div>
