@@ -4,26 +4,31 @@
 <h2>Admin Event History</h2>
 
 <!-- Filtreringsformulär -->
-<form method="get" asp-action="AdminOverview">
-    <div>  
-       <label>Från datum:</label>  
-       <input type="date" name="startDate" value="@Context.Request.Query["startDate"]" />  
+<div class="row">
+    <div class="col-md-4">
+        <form method="get" asp-action="AdminOverview">
+            <div class="form-group">
+                <label>From date:</label>
+                <input class="form-control" type="date" name="startDate" value="@Context.Request.Query["startDate"]" />
+            </div>
+            <div class="form-group">
+                <label>To date:</label>
+                <input class="form-control" type="date" name="endDate" value="@Context.Request.Query["endDate"]" />
+            </div>
+            <div class="form-group">
+                <label>Driver-namn:</label>
+                <input class="form-control" type="text" name="driverName" value="@Context.Request.Query["driverName"]" placeholder="Sök efter driver" />
+            </div>
+            <div class="form-group">
+                <label>Employee-namn:</label>
+                <input class="form-control" type="text" name="employeeName" value="@Context.Request.Query["employeeName"]" placeholder="Sök efter employee" />
+            </div>
+            <button class="btn btn-primary btn-block mt-4" type="submit">Filtrera</button>
+            <a asp-action="AdminOverview" class="btn btn-secondary btn-block mt-4">Återställ</a>
+        </form>
     </div>
-    <div>
-        <label>Till datum:</label>
-        <input type="date" name="endDate" value="@Context.Request.Query["endDate"]" />
-    </div>
-    <div>
-        <label>Driver-namn:</label>
-        <input type="text" name="driverName" value="@Context.Request.Query["driverName"]" placeholder="Sök efter driver" />
-    </div>
-    <div>
-        <label>Employee-namn:</label>
-        <input type="text" name="employeeName" value="@Context.Request.Query["employeeName"]" placeholder="Sök efter employee" />
-    </div>
-    <button type="submit">Filtrera</button>
-    <a asp-action="AdminOverview" class="btn btn-secondary">Återställ</a>
-</form>
+</div>
+
 
 <table class="table table-striped table-bordered table-hover">
     <thead>

@@ -31,11 +31,20 @@ namespace DeliverySystem.Controllers
             var driver = _context.Drivers.FirstOrDefault(d => d.DriverID == driverId);
             if (driver == null) return NotFound();
 
+            // Skapa ett nytt Event med förvald DriverID och aktuellt datum
             var model = new Event { DriverID = driverId, NoteDate = DateTime.Now };
             ViewBag.DriverName = driver.DriverName;
+
+            // Om du vill ge admin möjlighet att välja ResponsibleEmployee, fyll ViewBag här
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Employees = new SelectList(_context.Employees, "Id", "Name");
+            }
+
             return View(model);
         }
 
+        // POST: Event/Create
         // POST: Event/Create
         [HttpPost]
         public async Task<IActionResult> Create(Event model)
@@ -47,16 +56,25 @@ namespace DeliverySystem.Controllers
                 {
                     return Unauthorized();
                 }
-                model.ResponsibleEmployeeid = currentEmployee.Id;
+
+                // Kontrollera om en administratör har valt en specifik ansvarig anställd
+                if (!User.IsInRole("Admin") || model.ResponsibleEmployeeid == null)
+                {
+                    model.ResponsibleEmployeeid = currentEmployee.Id;
+                }
 
                 _context.Events.Add(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Driver", new { id = model.DriverID });
             }
 
-        
             var driver = _context.Drivers.FirstOrDefault(d => d.DriverID == model.DriverID);
             ViewBag.DriverName = driver?.DriverName;
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Employees = new SelectList(_context.Employees, "Id", "Name");
+            }
+
             return View(model);
         }
         public async Task<IActionResult> Notifications()
@@ -94,6 +112,10 @@ namespace DeliverySystem.Controllers
             {
                 return NotFound();
             }
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Employees = new SelectList(_context.Employees, "Id", "Name");
+            }
 
             return View(eventItem);
         }
@@ -112,6 +134,12 @@ namespace DeliverySystem.Controllers
             {
                 try
                 {
+                    // Endast uppdatera ResponsibleEmployeeId om admin har gjort en ändring
+                    if (User.IsInRole("Admin") && model.ResponsibleEmployeeid != null)
+                    {
+                        _context.Entry(model).Property(e => e.ResponsibleEmployeeid).IsModified = true;
+                    }
+
                     _context.Update(model);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Details", "Driver", new { id = model.DriverID });

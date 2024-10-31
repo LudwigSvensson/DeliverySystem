@@ -25,12 +25,11 @@
             </div>
             @if (User.IsInRole("Admin"))
             {
-                <div class="form-group">
-                    <label asp-for="ResponsibleEmployee.Name" class="control-label"></label>
+                <div>
+                    <label asp-for="ResponsibleEmployee.Name" class="control-label">Responsible Employee</label>
                     <select asp-for="ResponsibleEmployeeId" class="form-select" asp-items="ViewBag.Employees"></select>
                 </div>
             }
-            
             <div>
                 <input type="submit" value="Save" class="btn btn-primary btn-block mt-4" />
                 <a asp-action="Index" class="btn btn-secondary btn-block mt-4">Go back</a>

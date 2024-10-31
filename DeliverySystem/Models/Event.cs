@@ -6,12 +6,15 @@ namespace DriverInfo.Models
     {
         [Key]
         public int EventID { get; set; }
-
+        [Display(Name = "Date of Event")]
         public DateTime NoteDate { get; set; }
+        [Display(Name = "Description")]
         public string NoteDescription { get; set; }
+        [Display(Name ="Earned")]
         public decimal AmountIn { get; set; }
 
         private decimal _amountOut;
+        [Display(Name = "Spent")]
         public decimal AmountOut
         {
             get => _amountOut;

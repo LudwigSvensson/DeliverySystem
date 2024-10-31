@@ -36,16 +36,12 @@
                 <span asp-validation-for="AmountOut" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary btn-block mt-4" />
+                <a asp-controller="Driver" asp-action="Details" asp-route-id="@Model.DriverID" class="btn btn-secondary btn-block mt-4">Go back</a>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-controller="Driver" asp-action="Details">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -13,38 +13,50 @@
         <form asp-action="Create">
             <input type="hidden" asp-for="DriverID" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="NoteDate" class="control-label"></label>
                 <input asp-for="NoteDate" class="form-control" />
                 <span asp-validation-for="NoteDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="NoteDescription" class="control-label"></label>
                 <input asp-for="NoteDescription" class="form-control" />
                 <span asp-validation-for="NoteDescription" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="AmountIn" class="control-label"></label>
-                <input asp-for="AmountIn" class="form-control" />
+                <input asp-for="AmountIn" class="form-control" placeholder="SEK" />
                 <span asp-validation-for="AmountIn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AmountOut" class="control-label"></label>
-                <input asp-for="AmountOut" class="form-control" />
-                <span asp-validation-for="AmountOut" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="AmountOut" class="control-label"></label>
+                <input asp-for="AmountOut" class="form-control" placeholder="SEK" />
+                <span asp-validation-for="AmountOut" class="text-danger"></span>
+            </div>
+
+            <!-- Only show ResponsibleEmployee selection for Admin users -->
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="form-group">
+                    <label asp-for="ResponsibleEmployeeid" class="control-label">Responsible Employee</label>
+                    <select asp-for="ResponsibleEmployeeid" class="form-select" asp-items="ViewBag.Employees"></select>
+                </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary btn-block mt-4" />
+                <a asp-action="Index" class="btn btn-secondary btn-block mt-4">Go back</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index" asp-controller ="Driver">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
