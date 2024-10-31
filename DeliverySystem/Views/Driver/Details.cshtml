@@ -12,10 +12,10 @@
 
 <h4>Filter Events by Date</h4>
 <form method="get" asp-action="Details" asp-route-id="@Model.DriverID" class="form-inline mb-4">
-    <label class="mr-2">Från:</label>
+    <label class="mr-2">From:</label>
     <input type="date" name="startDate" value="@ViewBag.StartDate?.ToString("yyyy-MM-dd")" class="form-control mr-2" />
 
-    <label class="mr-2">Till:</label>
+    <label class="mr-2">To:</label>
     <input type="date" name="endDate" value="@ViewBag.EndDate?.ToString("yyyy-MM-dd")" class="form-control mr-2" />
     <div class="text-center mt-3">
         <button type="submit" class="btn btn-success btn-lg">Filter</button>
@@ -24,7 +24,9 @@
 </form>
 <hr/>
 <div class="text-center mb-4">
-    <h4>Events</h4>
+    <h3>Events</h3>
+    <h4>Drivers Earnings + Spendings: @Model.TotalAmountAllEvents kr</h4>
+    
 </div>
 <div class="text-center mt-4">
     <a asp-action="Edit" asp-route-id="@Model.DriverID" class="btn btn-primary btn-block mt-4">Edit Driver</a>
@@ -48,8 +50,8 @@
                 
                     <td>@eventItem.NoteDate.ToShortDateString()</td>
                     <td>@eventItem.NoteDescription</td>
-                    <td>@eventItem.AmountIn</td>
-                    <td>@eventItem.AmountOut</td>
+                    <td>@eventItem.AmountIn kr</td>
+                    <td>@eventItem.AmountOut kr</td>
                     <td>@eventItem.ResponsibleEmployee?.Name</td>
                     <td>
                         <a asp-controller="Event" asp-action="Edit" asp-route-id="@eventItem.EventID" class="btn btn-outline-warning btn-sm">Edit</a>

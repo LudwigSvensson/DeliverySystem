@@ -11,10 +11,12 @@ namespace DriverInfo.Models
         [Display(Name = "Description")]
         public string NoteDescription { get; set; }
         [Display(Name ="Earned")]
+        [DisplayFormat(DataFormatString = "{0:N2} kr")]
         public decimal AmountIn { get; set; }
 
         private decimal _amountOut;
         [Display(Name = "Spent")]
+        [DisplayFormat(DataFormatString = "{0:N2} kr")]
         public decimal AmountOut
         {
             get => _amountOut;

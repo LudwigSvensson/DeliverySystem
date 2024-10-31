@@ -20,7 +20,7 @@ namespace DriverInfo.Models
         [Display(Name = "Responsible Employee")]
         public Employee ResponsibleEmployee { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DisplayFormat(DataFormatString = "{0:N2} kr")]
         [Display(Name = "Total amount spent")]
         public decimal TotalAmountSpent
         {
@@ -29,7 +29,7 @@ namespace DriverInfo.Models
                 return Events?.Sum(e => e.AmountOut) ?? 0;
             }
         }
-        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DisplayFormat(DataFormatString = "{0:N2} kr")]
         [Display(Name = "Total amount earned")]
         public decimal TotalAmountEarned
         {
@@ -38,8 +38,7 @@ namespace DriverInfo.Models
                 return Events?.Sum(e => e.AmountIn) ?? 0;
             }
         }
-        [DisplayFormat(DataFormatString = "{0:C}")]
-        [Display(Name = "Total amount both income and expenses")]
+        [DisplayFormat(DataFormatString = "{0:N2} kr")]
         public decimal TotalAmountAllEvents
         {
             get
