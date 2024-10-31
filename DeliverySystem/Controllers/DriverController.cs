@@ -121,12 +121,16 @@ namespace DeliverySystem.Controllers
             {
                 return NotFound();
             }
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Employees = new SelectList(_context.Employees, "Id", "Name");
+            }
             return View(driver);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DriverID,DriverName,CarReg")] Driver driver)
+        public async Task<IActionResult> Edit(int id, [Bind("DriverID,DriverName,CarReg,ResponsibleEmployeeId")] Driver driver)
         {
             if (id != driver.DriverID)
             {

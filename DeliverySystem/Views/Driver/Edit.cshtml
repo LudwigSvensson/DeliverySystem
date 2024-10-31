@@ -3,10 +3,10 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
-
-<h4>Driver</h4>
+<div class="text-center mb-4">
+    <h2>Edit Driver</h2>
+    <h4>@Model.DriverName</h4>
+</div>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -23,16 +23,22 @@
                 <input asp-for="CarReg" class="form-control" />
                 <span asp-validation-for="CarReg" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="form-group">
+                    <label asp-for="ResponsibleEmployee.Name" class="control-label"></label>
+                    <select asp-for="ResponsibleEmployeeId" class="form-select" asp-items="ViewBag.Employees"></select>
+                </div>
+            }
+            
+            <div>
+                <input type="submit" value="Save" class="btn btn-primary btn-block mt-4" />
+                <a asp-action="Index" class="btn btn-secondary btn-block mt-4">Go back</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

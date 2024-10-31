@@ -4,37 +4,24 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h2 class="text-center mb-4">Delete Driver</h2>
+<p class="text-center mb-4">Are you sure you want to delete <strong>@Model.DriverName</strong> from the system?</p>
 
-<h3>Are you sure you want to delete @Model.DriverName from the system?</h3>
-<div>
-    <hr />
+<div class="mb-3">
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DriverName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DriverName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CarReg)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CarReg)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalAmountAllEvents)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TotalAmountAllEvents)
-        </dd>
+        <dt class="col-sm-5">Driver Name</dt>
+        <dd class="col-sm-7">@Model.DriverName</dd>
 
+        <dt class="col-sm-5">Registration Number</dt>
+        <dd class="col-sm-7">@Model.CarReg</dd>
 
     </dl>
-    
-    <form asp-action="Delete">
+</div>
+
+<div class="text-center mt-4">
+    <form asp-action="Delete" method="post">
         <input type="hidden" asp-for="DriverID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> 
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
     </form>
 </div>

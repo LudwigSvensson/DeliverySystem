@@ -15,8 +15,9 @@ namespace DriverInfo.Models
         [Display(Name = "Registration Number")]
         public string CarReg { get; set; }
 
-        // Referens till den ansvariga anställda
         public string ResponsibleEmployeeId { get; set; }
+        
+        [Display(Name = "Responsible Employee")]
         public Employee ResponsibleEmployee { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C}")]

@@ -10,6 +10,7 @@ namespace DriverInfo.Models
         public DateTime NoteDate { get; set; }
         public string NoteDescription { get; set; }
         public decimal AmountIn { get; set; }
+
         private decimal _amountOut;
         public decimal AmountOut
         {

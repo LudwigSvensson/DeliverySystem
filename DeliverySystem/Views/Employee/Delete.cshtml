@@ -4,5 +4,6 @@
 <p>Are you sure you want to delete @Model.UserName?</p>
 <form asp-action="DeleteConfirmed" method="post">
     <input type="hidden" asp-for="Id" />
-    <button  class="btn btn-danger" type="submit">Delete</button>
+    <button class="btn btn-danger btn-block mt-4" type="submit">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary btn-block mt-4">Go back</a>
 </form>
