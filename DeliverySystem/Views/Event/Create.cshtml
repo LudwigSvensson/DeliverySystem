@@ -37,8 +37,6 @@
                 <input asp-for="AmountOut" class="form-control" placeholder="SEK" />
                 <span asp-validation-for="AmountOut" class="text-danger"></span>
             </div>
-
-            <!-- Only show ResponsibleEmployee selection for Admin users -->
             @if (User.IsInRole("Admin"))
             {
                 <div class="form-group">

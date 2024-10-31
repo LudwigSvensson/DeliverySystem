@@ -18,8 +18,8 @@ body {
 
 .nav-link.active {
     font-weight: bold;
-    color: #333 !important; /* Ändra färg efter behov */
-    border-bottom: 2px solid #333; /* Ger en markering under länken */
+    color: #333 !important; 
+    border-bottom: 2px solid #333; 
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -106,4 +106,24 @@ h2 {
 
 .input-group {
     max-width: 500px; 
+}
+/* HomePage Styling/*/
+.text-center h1.display-4 {
+    font-size: 2.5rem;
+    color: #343a40;
+}
+
+.text-center p {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.text-center a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.text-center a:hover {
+    color: #0056b3;
+    text-decoration: none;
 }

@@ -23,15 +23,15 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark @(ViewContext.RouteData.Values["Controller"].ToString() == "Employee" ? "active" : "")"
+                            <a class="nav-link text-dark @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Employee" ? "active" : "")"
                                asp-area="" asp-controller="Employee" asp-action="Index">Manage Employees</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark @(ViewContext.RouteData.Values["Controller"].ToString() == "Driver" ? "active" : "")"
+                            <a class="nav-link text-dark @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Driver" ? "active" : "")"
                                asp-area="" asp-controller="Driver" asp-action="Index">Manage Drivers</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark @(ViewContext.RouteData.Values["Controller"].ToString() == "Event" ? "active" : "")"
+                            <a class="nav-link text-dark @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Event" ? "active" : "")"
                                asp-controller="Event" asp-action="AdminOverview">Overview</a>
                         </li>
                     </ul>
