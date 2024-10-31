@@ -28,5 +28,15 @@
             <text>Vänligen logga in för att se mer information.</text>
         }
     </p>
-    <p>Detta system är byggt för att enkelt kunna se över sina förare och deras händelser.</p>
+    @if (User.IsInRole("Admin"))
+    {
+        <text>Detta system är byggt för att enkelt kunna se över sina förare och deras händelser.
+            Du är nu inloggad som Admin och har du extra funktionaliteter, såsom en längre överblick utav händelser, kunna radera, lägga till och uppdatera både Drivers, Employees och Events.
+        </text>
+    }
+    else
+    {
+        <text>Detta system är byggt för att enkelt kunna se över sina förare och deras händelser.</text>
+    }
+    
 </div>
