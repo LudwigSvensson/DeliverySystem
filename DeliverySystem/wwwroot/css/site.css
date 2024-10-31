@@ -15,7 +15,9 @@ body {
     color: #333;
     font-family: Arial, sans-serif;
 }
-
+.navbar-brand {
+    font-family: "Font Awesome 6 Brands";
+}
 .nav-link.active {
     font-weight: bold;
     color: #333 !important; 
